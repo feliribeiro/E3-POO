@@ -25,10 +25,7 @@ public class Painel {
         limparButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                textField1.setText("");
-                textField2.setText("");
-                textField3.setText("");
-                textField4.setText("");
+                limpaTudo();
             }
         });
         okButton.addActionListener(new ActionListener() {
@@ -36,18 +33,35 @@ public class Painel {
             public void actionPerformed(ActionEvent e) {
 
                 try {
-                    cd.addDrone(new DronePessoas(Integer.parseInt(String.valueOf(textField1)),
-                            Double.parseDouble(String.valueOf(textField2)),
-                            Double.parseDouble(String.valueOf(textField3)),
-                            Integer.parseInt(String.valueOf(textField4))));
-                    textArea1.setText(textField1 +"/n"+textField2+"/n"+textField3+"/n"+textField4);
+                    int codigo = Integer.parseInt(textField1.getText());
+                    double custoFixo = Double.parseDouble(textField2.getText());
+                    double autonomia = Double.parseDouble(textField3.getText());
+                    int qtdMaxima = Integer.parseInt(textField4.getText());
+                    cd.addDrone(new DronePessoas(codigo, custoFixo, autonomia, qtdMaxima));
+
+                    textArea1.setText(
+                    "Código do Drone: " + textField1.getText() + "\n" +
+                            "Custo Fixo: " + textField2.getText() + "\n" +
+                            "Autonomia: " + textField3.getText() + "\n" +
+                            "Quantidade Máxima de Pessoas: " + textField4.getText()
+                    );
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Erro de formatação: Digite números válidos.");
+                    limpaTudo();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage());//"Erro ao adicionar drone de pessoas");
+                    JOptionPane.showMessageDialog(null, "Erro ao adicionar drone: " + ex.getMessage());
+                    limpaTudo();
                 }
             }
         });
     }
-
+    public void limpaTudo(){
+        textField1.setText("");
+        textField2.setText("");
+        textField3.setText("");
+        textField4.setText("");
+        textArea1.setText("");
+    }
     public JPanel getPainel() {
         return painel;
     }
